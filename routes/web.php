@@ -26,7 +26,7 @@ use App\Http\Controllers\ArticleController;
 Route::resource('articles', ArticleController::class);
 
 use App\Http\Controllers\PostController;
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::resource('posts', PostController::class);
 
 use App\Http\Controllers\BlogController;
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

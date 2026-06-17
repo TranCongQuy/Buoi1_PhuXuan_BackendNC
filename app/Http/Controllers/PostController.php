@@ -45,4 +45,76 @@ class PostController extends Controller
 
         return view('posts.index', compact('posts'));
     }
+    public function show($id)
+    {
+        // Dữ liệu giả (giống với trong index)
+        $posts = collect([
+            (object) [
+                'id' => 1,
+                'title' => 'Giới thiệu Laravel Framework',
+                'body' => 'Laravel là một PHP framework mạnh mẽ, cú pháp đẹp, phù hợp phát triển web hiện đại.',
+                'author' => 'Nguyễn Văn An',
+                'status' => 'published',
+                'created_at' => now()->subDays(5),
+            ],
+            (object) [
+                'id' => 2,
+                'title' => 'Routing trong Laravel - Toàn tập',
+                'body' => 'Routing là cơ chế ánh xạ URL đến xử lý logic. Laravel hỗ trợ route parameter, named route, group route.',
+                'author' => 'Trần Thị Bình',
+                'status' => 'published',
+                'created_at' => now()->subDays(3),
+            ],
+            (object) [
+                'id' => 3,
+                'title' => 'Blade Templates - Hướng dẫn chi tiết',
+                'body' => 'Blade là template engine mạnh mẽ với cú pháp đẹp, hỗ trợ layout kế thừa, component.',
+                'author' => 'Lê Văn Cường',
+                'status' => 'published',
+                'created_at' => now()->subDays(1),
+            ],
+            (object) [
+                'id' => 4,
+                'title' => 'Eloquent ORM - Làm việc với Database',
+                'body' => 'Eloquent là ORM của Laravel, giúp tương tác với database một cách trực quan và dễ dàng.',
+                'author' => 'Phạm Thị Dung',
+                'status' => 'draft',
+                'created_at' => now(),
+            ],
+        ]);
+
+        // Tìm bài viết theo id
+        $post = $posts->firstWhere('id', (int) $id);
+
+        if (!$post) {
+            abort(404, 'Bài viết không tồn tại');
+        }
+
+        return view('posts.show', compact('post'));
+    }
+
+    public function create()
+    {
+        return view('posts.create');
+    }
+
+    public function store(Request $request)
+    {
+        return redirect()->route('posts.index');
+    }
+
+    public function edit($id)
+    {
+        abort(404, 'Trang chỉnh sửa chưa được xây dựng.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        return redirect()->route('posts.index');
+    }
+
+    public function destroy($id)
+    {
+        return redirect()->route('posts.index');
+    }
 }

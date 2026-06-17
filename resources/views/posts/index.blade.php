@@ -9,7 +9,7 @@
 
     @forelse($posts as $post)
         <div class="card mb-3 shadow-sm">
-            <div class="card-body">s
+            <div class="card-body">
                 <h5 class="card-title">
                     #{{ $loop->iteration }}. {{ $post->title }}
                 </h5>
@@ -18,13 +18,8 @@
                     ✍ {{ $post->author }} · 
                     📅 {{ $post->created_at->format('d/m/Y') }}
                 </p>
-                @if($post->status === 'published')
-                    <span class="badge bg-success">Đã xuất bản</span>
-                @elseif($post->status === 'draft')
-                    <span class="badge bg-warning text-dark">Bản nháp</span>
-                @else
-                    <span class="badge bg-secondary">Không xác định</span>
-                @endif
+                {{-- Sử dụng component <x-badge> thay cho @if --}}
+                <x-badge :status="$post->status" />
             </div>
         </div>
     @empty
