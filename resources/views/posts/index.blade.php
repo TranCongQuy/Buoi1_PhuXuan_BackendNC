@@ -38,14 +38,16 @@
                             {{ Str::limit($post->content, 120) }}
                         </p>
                         <small class="text-muted">
-                            {{ $post->created_at ? $post->created_at->diffForHumans() : 'Chưa có ngày' }}
+                            ✍️ {{ $post->user->name ?? 'Ẩn danh' }} · 
+                            📅 {{ $post->created_at ? $post->created_at->diffForHumans() : 'Chưa có ngày' }}
                         </small>
+                        <br>
+                        <span class="badge bg-secondary">{{ $post->comments_count }} bình luận</span>
 
-                        {{-- ✅ HIỂN THỊ TAGS (Lab 2) --}}
                         @if($post->tags->isNotEmpty())
                             <div class="mt-1">
                                 @foreach($post->tags as $tag)
-                                    <span class="badge bg-secondary me-1">#{{ $tag->name }}</span>
+                                    <span class="badge bg-info text-dark me-1">#{{ $tag->name }}</span>
                                 @endforeach
                             </div>
                         @endif
@@ -54,7 +56,6 @@
                         <a href="{{ route('posts.edit', $post) }}"
                            class="btn btn-sm btn-outline-primary">✏️ Sửa</a>
 
-                        {{-- Form xóa --}}
                         <form method="POST"
                               action="{{ route('posts.destroy', $post) }}"
                               onsubmit="return confirm('Bạn có chắc muốn xóa bài viết: {{ $post->title }}?')">

@@ -11,8 +11,27 @@ class PostController extends Controller
 {
     public function index()
     {
-        // ✅ Eager load tags để tránh N+1
-        $posts = Post::with('tags')->latest()->paginate(10);
+        $posts = Post::select(
+            'id',
+            'title',
+            'slug',
+            'content',
+            'user_id',
+            'category_id',
+            'created_at',
+            'updated_at',
+            'status'
+        )
+            ->with([
+                'user:id,name',
+                'category:id,name',
+                'tags:id,name',
+            ])
+            ->withCount('comments')
+            ->where('status', 'published')
+            ->latest('published_at')
+            ->paginate(10);
+
         return view('posts.index', compact('posts'));
     }
 
@@ -25,7 +44,7 @@ class PostController extends Controller
     {
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $data['user_id'] = 1; // tạm thời hardcode
+        $data['user_id'] = 1;
 
         Post::create($data);
 
@@ -35,9 +54,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        // ✅ Eager load: approvedComments + user của comment + tags
         $post->load(['approvedComments.user', 'tags']);
-        // ✅ Đếm số comment (kể cả chưa duyệt)
         $post->loadCount('comments');
 
         return view('posts.show', compact('post'));
