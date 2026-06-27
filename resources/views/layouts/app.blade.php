@@ -1,41 +1,95 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="vi">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Phú Xuân Blog') | Phú Xuân Blog</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Alpine.js CDN -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-    <!-- Bootstrap CSS CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @stack('styles')
+    <style>
+        body { font-family: 'Nunito', sans-serif; padding-top: 0; background: #f8f9fa; }
+        .footer { background: #343a40; color: #aaa; padding: 20px 0; margin-top: 60px; }
+        .footer a { color: #ccc; text-decoration: none; }
+        .footer a:hover { color: #fff; }
+        .page-header { background: linear-gradient(135deg, #1B3F6E 0%, #2E75B6 100%); color: white; padding: 40px 0; margin-bottom: 32px; }
+        .alert { border-radius: 8px; }
+        .alert-success { border-left: 4px solid #16a34a; }
+        .alert-danger { border-left: 4px solid #dc2626; }
+        .alert-warning { border-left: 4px solid #d97706; }
+        .alert-info { border-left: 4px solid #0891b2; }
+        .navbar-brand { font-weight: 700; }
+        .dropdown-menu .dropdown-item:hover { background: #f1f3f5; }
+    </style>
 </head>
-<body class="font-sans antialiased bg-gray-100">
-    <div class="min-h-screen">
-        @include('layouts.navigation')
+<body>
+    @include('layouts.navigation')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+    {{-- Flash Messages --}}
+    <div class="container mt-3">
+        @foreach (['success', 'error', 'warning', 'info'] as $type)
+            @if (session($type))
+                <div class="alert alert-{{ $type }} alert-dismissible fade show" role="alert">
+                    @if ($type === 'success') ✅
+                    @elseif ($type === 'error') ❌
+                    @elseif ($type === 'warning') ⚠️
+                    @else ℹ️ @endif
+                    {{ session($type) }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
-            </header>
-        @endif
-
-        <!-- Page Content -->
-        <main>
-            @yield('content')
-        </main>
+            @endif
+        @endforeach
     </div>
+
+    @hasSection('page-header')
+        <div class="page-header">
+            <div class="container">
+                @yield('page-header')
+            </div>
+        </div>
+    @endif
+
+    <main class="container py-4">
+        @yield('content')
+    </main>
+
+    @include('partials.footer')
+
+    {{-- MODAL YÊU CẦU ĐĂNG NHẬP --}}
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginRequiredModalLabel">🔒 Yêu cầu đăng nhập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="fs-5">Bạn cần đăng nhập để xem nội dung này.</p>
+                    <p class="text-muted">Vui lòng đăng nhập hoặc đăng ký tài khoản để tiếp tục.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-4">🔑 Đăng nhập</a>
+                    <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg px-4">📝 Đăng ký</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+                setTimeout(function() {
+                    var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                    if (bsAlert) bsAlert.close();
+                }, 5000);
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>

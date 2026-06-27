@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -9,31 +11,66 @@ use App\Http\Controllers\PostController;
 |--------------------------------------------------------------------------
 */
 
+// ─── TRANG CHỦ ───────────────────────────────────────────────
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
+// ─── ABOUT ────────────────────────────────────────────────────
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+// ─── CONTACT ──────────────────────────────────────────────────
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// ─── ARTICLES (Buổi 2) ───────────────────────────────────────
+Route::resource('articles', ArticleController::class);
+
+// ─── BLOG (Buổi 1) ───────────────────────────────────────────
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+
+// ─── DASHBOARD ─────────────────────────────────────────────────
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// ─── SHOP ROUTES ──────────────────────────────────────────────
+// ─── PUBLIC POST ROUTES (không cần login) ───────────────────
+// Chỉ index và show là public – show đặt SAU create để tránh xung đột
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+// ─── SHOP ROUTES (public) ────────────────────────────────────
 Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/products', function () {
-        return 'Danh sách sản phẩm';
+        return view('shop.products');
     })->name('products');
-
     Route::get('/cart', function () {
-        return 'Giỏ hàng';
+        return view('shop.cart');
     })->name('cart');
 });
 
-// ─── POST ROUTES ──────────────────────────────────────────────
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::resource('posts', PostController::class)->except(['index']);
+// ─── PROTECTED POST ROUTES (cần login) ──────────────────────
+Route::middleware(['auth'])->group(function () {
+    // create phải đặt TRƯỚC show và nằm trong auth
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
+    // Thùng rác & khôi phục (cần auth)
+    Route::get('/posts/trashed', [PostController::class, 'trashed'])->name('posts.trashed');
+    Route::patch('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+
+    // Sửa / Xóa (cần auth + owner)
+    Route::middleware(['post.owner'])->group(function () {
+        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    });
+});
+
+// ─── PUBLIC SHOW (đặt SAU tất cả route có path cụ thể) ──────
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+// ─── AUTH ROUTES (Breeze) ─────────────────────────────────────
 require __DIR__ . '/auth.php';

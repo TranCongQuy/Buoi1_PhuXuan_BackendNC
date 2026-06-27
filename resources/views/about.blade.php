@@ -13,6 +13,13 @@
             <h2>Về dự án</h2>
             <p>Đây là ứng dụng demo được xây dựng trong khuôn khổ môn học <strong>Lập trình Backend với Laravel</strong> tại Đại học Phú Xuân.</p>
             <p>Mục tiêu: minh họa cách xây dựng ứng dụng web chuẩn MVC với Laravel.</p>
+            <p>Các tính năng đã thực hiện:</p>
+            <ul>
+                <li>Quản lý bài viết (CRUD)</li>
+                <li>Xác thực người dùng (Login/Register)</li>
+                <li>Phân quyền theo tác giả</li>
+                <li>Bình luận và gắn thẻ</li>
+            </ul>
         </div>
     </div>
 @endsection

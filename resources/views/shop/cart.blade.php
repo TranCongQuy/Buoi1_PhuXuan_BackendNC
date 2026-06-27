@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html><head><title>Giỏ hàng</title></head>
-<body>
-<h1>Giỏ hàng của bạn</h1>
-<a href="{{ route('shop.products') }}">Tiếp tục mua sắm</a><br>
-<a href="{{ route('home') }}">→ Trang chủ</a>
-</body></html>
+@extends('layouts.app')
+
+@section('title', 'Giỏ hàng')
+
+@section('page-header')
+    <h1>🛍️ Giỏ hàng</h1>
+    <p class="mb-0">Sản phẩm bạn đã chọn</p>
+@endsection
+
+@section('content')
+    <div class="alert alert-info">
+        Hiện chưa có sản phẩm trong giỏ hàng.
+    </div>
+    <a href="{{ route('shop.products') }}" class="btn btn-secondary">🛒 Tiếp tục mua sắm</a>
+@endsection
