@@ -10,10 +10,18 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate; // 👈 THÊM
 
 class PostController extends Controller
 {
+    /**
+     * authorizeResource() tự động áp dụng Policy cho tất cả actions
+     * Post::class => Model, 'post' => tên tham số route
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post');
+    }
+
     public function index(Request $request)
     {
         $query = Post::query()
@@ -71,21 +79,15 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
-    // 👇 SỬA: thêm Gate check
     public function edit(Post $post)
     {
-        if (!Gate::allows('update-post', $post)) {
-            abort(403, 'Bạn không có quyền chỉnh sửa bài viết này!');
-        }
-
+        // authorizeResource tự động check Policy::update()
         return view('posts.edit', compact('post'));
     }
 
-    // 👇 SỬA: thêm Gate check
     public function update(UpdatePostRequest $request, Post $post)
     {
-        Gate::authorize('update-post', $post);
-
+        // authorizeResource tự động check Policy::update()
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
 
@@ -95,13 +97,9 @@ class PostController extends Controller
             ->with('success', 'Cập nhật bài viết thành công!');
     }
 
-    // 👇 SỬA: thêm Gate check
     public function destroy(Post $post)
     {
-        if (!Gate::allows('delete-post', $post)) {
-            abort(403, 'Bạn không có quyền xóa bài viết này!');
-        }
-
+        // authorizeResource tự động check Policy::delete()
         $post->delete();
 
         return redirect()->route('posts.index', ['mine' => 1])
@@ -140,7 +138,7 @@ class PostController extends Controller
             ->with('success', 'Bài viết đã được xuất bản!');
     }
 
-    // 👇 COMMENT METHODS (giữ nguyên)
+    // 👇 COMMENT METHODS
     public function storeComment(Request $request, Post $post)
     {
         $request->validate([

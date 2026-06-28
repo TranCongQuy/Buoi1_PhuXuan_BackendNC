@@ -18,28 +18,27 @@
 
     <article class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center py-3"
-             style="background:#1B2A4A;">
-            <h4 class="mb-0 text-white">{{ $post->title }}</h4>
-            <div class="d-flex gap-2 align-items-center">
-                @can('update-post', $post)
-                    <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-light">✏️ Sửa</a>
-                @endcan
+     style="background:#1B2A4A;">
+    <h4 class="mb-0 text-white">{{ $post->title }}</h4>
+    <div class="d-flex gap-2 align-items-center">
+        @can('update', $post)
+            <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-light">✏️ Sửa</a>
+        @endcan
 
-                @can('delete-post', $post)
-                    <form method="POST" action="{{ route('posts.destroy', $post) }}"
-                          onsubmit="return confirm('Xóa bài viết: {{ $post->title }}?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
-                    </form>
-                @endcan
+        @can('delete', $post)
+            <form method="POST" action="{{ route('posts.destroy', $post) }}"
+                  onsubmit="return confirm('Xóa bài viết: {{ $post->title }}?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
+            </form>
+        @endcan
 
-                {{-- SỬA: đổi text-muted thành text-white để nhìn rõ trên nền tối --}}
-                @cannot('update-post', $post)
-                    <small class="text-white">🔒 Chỉ tác giả có quyền sửa bài viết này</small>
-                @endcannot
-            </div>
-        </div>
+        @cannot('update', $post)
+            <small class="text-white">🔒 Chỉ tác giả có quyền sửa bài viết này</small>
+        @endcannot
+    </div>
+</div>
         <div class="card-body p-4">
             <p class="text-muted small mb-4">
                 📅 Tạo lúc {{ $post->created_at->format('d/m/Y H:i') }}

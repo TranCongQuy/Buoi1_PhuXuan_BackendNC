@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Post;
-use App\Models\User;
+use App\Policies\PostPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Post::class => PostPolicy::class, // Map Post model với PostPolicy
     ];
 
     /**
@@ -25,18 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Gate: kiểm tra quyền sửa bài viết (chỉ tác giả)
-        Gate::define('update-post', function (User $user, Post $post) {
-            return $user->id === $post->user_id;
+        // Giữ lại Gate từ Lab 1 (có thể dùng kết hợp)
+        Gate::define('update-post', function ($user, $post) {
+            return $user->id === $post->user_id || $user->id === 1;
         });
 
-        // Gate: kiểm tra quyền xóa bài viết (tác giả hoặc admin)
-        Gate::define('delete-post', function (User $user, Post $post) {
-            // Admin (user_id = 1) được xóa mọi bài
-            if ($user->id === 1) {
-                return true;
-            }
-            return $user->id === $post->user_id;
+        Gate::define('delete-post', function ($user, $post) {
+            return $user->id === $post->user_id || $user->id === 1;
         });
     }
 }
