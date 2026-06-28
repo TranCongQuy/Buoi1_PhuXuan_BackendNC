@@ -5,6 +5,7 @@
 @section('content')
 <div class="container mt-4" style="max-width: 760px;">
 
+<<<<<<< HEAD
     @php
         $mineParam = request()->has('mine') ? ['mine' => 1] : [];
     @endphp
@@ -12,6 +13,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>✏️ Chỉnh sửa bài viết</h2>
         <a href="{{ route('posts.show', array_merge(['post' => $post], $mineParam)) }}" class="btn btn-outline-secondary">
+=======
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>✏️ Chỉnh sửa bài viết</h2>
+        <a href="{{ route('posts.show', $post) }}" class="btn btn-outline-secondary">
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
             ← Xem bài viết
         </a>
     </div>
@@ -65,6 +71,7 @@
                 </div>
 
                 <hr>
+<<<<<<< HEAD
                 <div class="d-flex gap-2 flex-wrap align-items-center">
                     <button type="submit" class="btn btn-success px-4">✅ Cập nhật</button>
                     <a href="{{ route('posts.show', array_merge(['post' => $post], $mineParam)) }}" class="btn btn-light">Hủy</a>
@@ -76,6 +83,11 @@
                             <button type="submit" class="btn btn-success">📢 Xuất bản</button>
                         </form>
                     @endif
+=======
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success px-4">✅ Cập nhật</button>
+                    <a href="{{ route('posts.show', $post) }}" class="btn btn-light">Hủy</a>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                 </div>
             </form>
         </div>

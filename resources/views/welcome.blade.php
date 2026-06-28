@@ -2,13 +2,25 @@
 
 @section('title', 'Trang chủ')
 
+<<<<<<< HEAD
+=======
+@section('page-header')
+    <h1 class="display-5 fw-bold">🏠 Chào mừng đến Phú Xuân Blog!</h1>
+    <p class="lead mb-0">Ứng dụng demo học Laravel – Đại học Phú Xuân</p>
+@endsection
+
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
 @section('content')
     <div class="row g-4">
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">📝 Blog</h5>
+<<<<<<< HEAD
                     <p class="card-text">Xem các bài viết mới nhất về Laravel và PHP.</p>
+=======
+                    <p class="card-text">Xem các bài viết mới nhất về Laravel.</p>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                     <a href="{{ route('posts.index') }}" class="btn btn-primary btn-sm">Xem ngay</a>
                 </div>
             </div>

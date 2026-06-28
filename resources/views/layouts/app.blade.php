@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Phú Xuân Blog') | Phú Xuân Blog</title>
 
@@ -16,11 +17,18 @@
         .footer a { color: #ccc; text-decoration: none; }
         .footer a:hover { color: #fff; }
         .page-header { background: linear-gradient(135deg, #1B3F6E 0%, #2E75B6 100%); color: white; padding: 40px 0; margin-bottom: 32px; }
+=======
+    <title>@yield('title', 'Phú Xuân Blog') | Phú Xuân Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @stack('styles')
+    <style>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
         .alert { border-radius: 8px; }
         .alert-success { border-left: 4px solid #16a34a; }
         .alert-danger { border-left: 4px solid #dc2626; }
         .alert-warning { border-left: 4px solid #d97706; }
         .alert-info { border-left: 4px solid #0891b2; }
+<<<<<<< HEAD
         .navbar-brand { font-weight: 700; }
         .dropdown-menu .dropdown-item:hover { background: #f1f3f5; }
     </style>
@@ -30,6 +38,16 @@
 
     {{-- Flash Messages --}}
     <div class="container mt-3">
+=======
+    </style>
+</head>
+<body class="bg-light">
+    {{-- NAVBAR --}}
+    @include('partials.navbar')
+
+    <div class="container mt-4">
+        {{-- FLASH MESSAGES (CHỈ HIỂN THỊ Ở ĐÂY) --}}
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
         @foreach (['success', 'error', 'warning', 'info'] as $type)
             @if (session($type))
                 <div class="alert alert-{{ $type }} alert-dismissible fade show" role="alert">
@@ -42,6 +60,7 @@
                 </div>
             @endif
         @endforeach
+<<<<<<< HEAD
     </div>
 
     @hasSection('page-header')
@@ -84,12 +103,46 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
                 setTimeout(function() {
+=======
+
+        {{-- NỘI DUNG CHÍNH --}}
+        @yield('content')
+    </div>
+
+    {{-- FOOTER --}}
+    @include('partials.footer')
+
+    {{-- BOOTSTRAP 5 JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    {{-- AUTO-DISMISS FLASH SAU 5 GIÂY --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.alert-dismissible').forEach(function (alert) {
+                setTimeout(function () {
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                     var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
                     if (bsAlert) bsAlert.close();
                 }, 5000);
             });
+<<<<<<< HEAD
         });
     </script>
+=======
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.alert-dismissible').forEach(function (alert) {
+                        var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                        if (bsAlert) bsAlert.close();
+                    });
+                }
+            });
+        });
+    </script>
+
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     @stack('scripts')
 </body>
 </html>

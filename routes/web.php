@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BlogController;
@@ -14,20 +15,34 @@ use App\Http\Controllers\ShopController;
 */
 
 // ─── TRANG CHỦ ───────────────────────────────────────────────
+=======
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\BlogController;
+
+// ─── Routes độc lập ─────────────────────────────────────────
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+<<<<<<< HEAD
 // ─── ABOUT ────────────────────────────────────────────────────
+=======
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+<<<<<<< HEAD
 // ─── CONTACT ──────────────────────────────────────────────────
+=======
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+<<<<<<< HEAD
 // ─── ARTICLES (Buổi 2) ───────────────────────────────────────
 Route::resource('articles', ArticleController::class);
 
@@ -80,3 +95,29 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 
 // ─── AUTH ROUTES (Breeze) ─────────────────────────────────────
 require __DIR__ . '/auth.php';
+=======
+// ─── Route Group với prefix /shop ───────────────────────────
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/products', function () {
+        return view('shop.products');
+    })->name('products');
+
+    Route::get('/cart', function () {
+        return view('shop.cart');
+    })->name('cart');
+});
+
+// ─── Articles ───────────────────────────────────────────────
+Route::resource('articles', ArticleController::class);
+
+// ─── Blog ───────────────────────────────────────────────────
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+
+// ─── Posts (Soft Delete) ──────────────────────────────────
+// QUAN TRỌNG: Đặt các route cụ thể TRƯỚC Route::resource()
+Route::get('/posts/trashed', [PostController::class, 'trashed'])->name('posts.trashed');
+Route::patch('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+
+// Resource route cho posts (CRUD + soft delete)
+Route::resource('posts', PostController::class);
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4

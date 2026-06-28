@@ -12,6 +12,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+<<<<<<< HEAD
+=======
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     protected $fillable = [
         'name',
         'email',
@@ -21,11 +29,20 @@ class User extends Authenticatable
         'user_id',
     ];
 
+<<<<<<< HEAD
+=======
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+<<<<<<< HEAD
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -40,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+=======
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
 }

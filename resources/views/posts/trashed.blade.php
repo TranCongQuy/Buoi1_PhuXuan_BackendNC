@@ -6,8 +6,12 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🗑️ Bài viết đã xóa</h2>
+<<<<<<< HEAD
         {{-- SỬA: về danh sách bài viết của user (mine=1) --}}
         <a href="{{ route('posts.index', ['mine' => 1]) }}" class="btn btn-outline-secondary">
+=======
+        <a href="{{ route('posts.index') }}" class="btn btn-outline-secondary">
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
             ← Quay lại danh sách
         </a>
     </div>
@@ -31,8 +35,12 @@
     @empty
         <div class="text-center py-5 text-muted">
             <p>📭 Không có bài viết nào trong thùng rác.</p>
+<<<<<<< HEAD
             {{-- SỬA: về danh sách bài viết của user (mine=1) --}}
             <a href="{{ route('posts.index', ['mine' => 1]) }}" class="btn btn-primary btn-sm">
+=======
+            <a href="{{ route('posts.index') }}" class="btn btn-primary btn-sm">
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                 Về danh sách bài viết
             </a>
         </div>

@@ -6,10 +6,19 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0">📋 Danh sách bài viết</h2>
     <div>
+<<<<<<< HEAD
         @auth
             <a href="{{ route('posts.trashed') }}" class="btn btn-outline-secondary me-2">🗑️ Thùng rác</a>
             <a href="{{ route('posts.create') }}" class="btn btn-primary">+ Thêm bài viết</a>
         @endauth
+=======
+        <a href="{{ route('posts.trashed') }}" class="btn btn-outline-secondary me-2">
+            🗑️ Thùng rác
+        </a>
+        <a href="{{ route('posts.create') }}" class="btn btn-primary">
+            + Thêm bài viết
+        </a>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     </div>
 </div>
 
@@ -56,7 +65,13 @@
 @if ($posts->isEmpty())
     <div class="text-center py-5 text-muted">
         <p>Chưa có bài viết nào.</p>
+<<<<<<< HEAD
         <a href="{{ route('posts.create') }}" class="btn btn-outline-primary">Tạo bài viết đầu tiên</a>
+=======
+        <a href="{{ route('posts.create') }}" class="btn btn-outline-primary">
+            Tạo bài viết đầu tiên
+        </a>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     </div>
 @else
     <div class="list-group shadow-sm">
@@ -65,6 +80,7 @@
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1 me-3">
                         <h5 class="mb-1">
+<<<<<<< HEAD
                             <a href="{{ route('posts.show', $post) }}" class="text-decoration-none text-dark">
                                 #{{ $loop->iteration }}. {{ $post->title }}
                             </a>
@@ -75,6 +91,29 @@
                             <span>📅 {{ $post->created_at->diffForHumans() }}</span>
                             <span>💬 {{ $post->comments_count }} bình luận</span>
                         </div>
+=======
+                            <a href="{{ route('posts.show', $post) }}"
+                               class="text-decoration-none text-dark">
+                                #{{ $loop->iteration }}. {{ $post->title }}
+                            </a>
+                        </h5>
+
+                        {{-- Hiển thị excerpt --}}
+                        <p class="mb-1 text-muted small">
+                            {{ $post->excerpt ?? Str::limit($post->content, 120) }}
+                        </p>
+
+                        {{-- Meta: tác giả, ngày, reading_time, comments --}}
+                        <div class="d-flex flex-wrap gap-3 text-muted small">
+                            <span>✍️ {{ $post->user->name ?? 'Ẩn danh' }}</span>
+                            <span>📅 {{ $post->published_at ? $post->published_at->format('d/m/Y') : 'Chưa xuất bản' }}</span>
+                            <span>⏱️ {{ $post->reading_time }}</span> {{-- Accessor --}}
+                            <span>💬 {{ $post->comments_count }} bình luận</span>
+                            <span>👁️ {{ number_format($post->views_count ?? 0) }} lượt xem</span>
+                        </div>
+
+                        {{-- Tags --}}
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                         @if($post->tags->isNotEmpty())
                             <div class="mt-1">
                                 @foreach($post->tags as $tag)
@@ -84,6 +123,7 @@
                         @endif
                     </div>
                     <div class="d-flex gap-2 flex-shrink-0">
+<<<<<<< HEAD
                         <a href="{{ route('posts.show', $post) }}s" class="btn btn-sm btn-outline-secondary">Xem</a>
                         @auth
     @if (Auth::id() === $post->user_id || Auth::id() == 1)
@@ -96,11 +136,28 @@
         </form>
     @endif
 @endauth
+=======
+                        <a href="{{ route('posts.edit', $post) }}"
+                           class="btn btn-sm btn-outline-primary">✏️ Sửa</a>
+
+                        <form method="POST"
+                              action="{{ route('posts.destroy', $post) }}"
+                              onsubmit="return confirm('Bạn có chắc muốn xóa bài viết: {{ $post->title }}?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Xóa</button>
+                        </form>
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+<<<<<<< HEAD
+=======
+
+    {{-- PHÂN TRANG --}}
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     <div class="mt-4 d-flex justify-content-center">
         {{ $posts->links() }}
     </div>

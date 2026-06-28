@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     // Hiển thị danh sách bài viết
+<<<<<<< HEAD
     public function index(Request $request)
     {
         // Dữ liệu giả (không dùng DB theo yêu cầu)
@@ -32,6 +33,17 @@ class ArticleController extends Controller
         $categories = ['Công nghệ', 'Khoa học', 'Kinh doanh'];
 
         return view('articles.index', compact('articles', 'categories', 'category'));
+=======
+    public function index()
+    {
+        $articles = [
+            ['id' => 1, 'title' => 'Giới thiệu Laravel Framework', 'author' => 'Nguyễn Văn A', 'date' => '2024-01-15'],
+            ['id' => 2, 'title' => 'Routing trong Laravel - Toàn tập', 'author' => 'Trần Thị B', 'date' => '2024-01-18'],
+            ['id' => 3, 'title' => 'Blade Templates - Hướng dẫn chi tiết', 'author' => 'Lê Văn C', 'date' => '2024-01-22'],
+            ['id' => 4, 'title' => 'Eloquent ORM - Làm việc với Database', 'author' => 'Phạm Thị D', 'date' => '2024-01-25'],
+        ];
+        return view('articles.index', compact('articles'));
+>>>>>>> 506f6d0231058084529b5e8e69646c8ce75575e4
     }
 
     // Hiển thị form tạo bài viết mới
