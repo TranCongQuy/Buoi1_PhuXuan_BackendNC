@@ -2,24 +2,41 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator; // ← Import class Paginator
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\Post;
+use App\Models\User;
 
-class AppServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
      */
-    public function register(): void
-    {
-        //
-    }
+    protected $policies = [
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+    ];
 
     /**
-     * Bootstrap any application services.
+     * Register any authentication / authorization services.
      */
     public function boot(): void
     {
-        Paginator::useBootstrap(); // ← Đặt trong boot()
+        $this->registerPolicies();
+
+        // Gate kiểm tra quyền sửa bài viết (chỉ tác giả)
+        Gate::define('update-post', function (User $user, Post $post) {
+            return $user->id === $post->user_id;
+        });
+
+        // Gate kiểm tra quyền xóa bài viết (tác giả hoặc admin)
+        Gate::define('delete-post', function (User $user, Post $post) {
+            // Admin (user_id = 1) được xóa mọi bài
+            if ($user->id === 1) {
+                return true;
+            }
+            return $user->id === $post->user_id;
+        });
     }
 }

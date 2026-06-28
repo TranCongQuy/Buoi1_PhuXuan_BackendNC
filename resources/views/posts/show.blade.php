@@ -21,18 +21,22 @@
              style="background:#1B2A4A;">
             <h4 class="mb-0 text-white">{{ $post->title }}</h4>
             <div class="d-flex gap-2">
-                @auth
-                    @if (Auth::id() === $post->user_id || Auth::id() == 1)
-                        <a href="{{ route('posts.edit', $post) }}"
-                           class="btn btn-sm btn-light">✏️ Sửa</a>
-                        <form method="POST" action="{{ route('posts.destroy', $post) }}"
-                              onsubmit="return confirm('Xóa bài viết: {{ $post->title }}?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
-                        </form>
-                    @endif
-                @endauth
+                @can('update-post', $post)
+                    <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-light">✏️ Sửa</a>
+                @endcan
+
+                @can('delete-post', $post)
+                    <form method="POST" action="{{ route('posts.destroy', $post) }}"
+                          onsubmit="return confirm('Xóa bài viết: {{ $post->title }}?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
+                    </form>
+                @endcan
+
+                @cannot('update-post', $post)
+                    <small class="text-muted">🔒 Chỉ tác giả mới sửa được</small>
+                @endcannot
             </div>
         </div>
         <div class="card-body p-4">

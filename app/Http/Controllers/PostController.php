@@ -6,10 +6,11 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\Comment; // 👈 THÊM
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate; // 👈 THÊM
 
 class PostController extends Controller
 {
@@ -72,11 +73,19 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        // Kiểm tra Gate – nếu không có quyền thì abort 403
+        if (!Gate::allows('update-post', $post)) {
+            abort(403, 'Bạn không có quyền chỉnh sửa bài viết này!');
+        }
+
         return view('posts.edit', compact('post'));
     }
 
     public function update(UpdatePostRequest $request, Post $post)
     {
+        // Cách ngắn hơn: authorize tự ném exception
+        Gate::authorize('update-post', $post);
+
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
 
@@ -88,6 +97,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        if (!Gate::allows('delete-post', $post)) {
+            abort(403, 'Bạn không có quyền xóa bài viết này!');
+        }
+
         $post->delete();
 
         return redirect()->route('posts.index', ['mine' => 1])
